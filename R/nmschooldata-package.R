@@ -37,12 +37,14 @@
 #' }
 #'
 #' @section Data Availability:
-#' Enrollment data with subgroup demographics is available from:
+#' Enrollment data is available from 2016-2025:
 #' \itemize{
-#'   \item 2019 (SY 2018-2019) through present
-#'   \item Earlier years may have different formats or require different sources
-#'   \item Data uses 40-Day (40D) enrollment counts
+#'   \item 2016-2018: Enrollment by grade only (no demographic subgroups)
+#'   \item 2019-2023, 2025: Full 40-Day (40D) subgroup enrollment with demographics
+#'   \item 2024: Only 80-Day data available (40D subgroup file not yet published)
 #' }
+#'
+#' Data includes state, district, and school level enrollment counts.
 #'
 #' @section New Mexico Context:
 #' New Mexico has approximately 89 school districts. The state has a

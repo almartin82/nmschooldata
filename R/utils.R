@@ -60,12 +60,22 @@ clean_names <- function(names) {
 #'
 #' Returns a vector of school years for which enrollment data is available.
 #'
+#' Data availability by year:
+#' \itemize{
+#'   \item 2016-2018: Enrollment by grade only (no demographic subgroups)
+#'   \item 2019-2023, 2025: Full demographic subgroups available
+#'   \item 2024: Only 80-Day data available (40-Day subgroup file not published)
+#' }
+#'
 #' @return Vector of valid end years
 #' @keywords internal
 get_valid_years <- function() {
-  # Currently available years based on PED website
-  # SY 2018-2019 through SY 2023-2024
-  2019:2024
+
+  # Available years based on NM PED website research:
+  # - 2016-2018: Enrollment by district/location/grade only (no subgroups)
+  # - 2019-2023, 2025: Full 40D subgroup enrollment data
+  # - 2024: Only 80D data available (40D subgroup file not published)
+  2016:2025
 }
 
 
