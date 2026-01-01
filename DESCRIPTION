@@ -32,5 +32,5 @@ Suggests:
     scales
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-URL: https://github.com/almartin82/nmschooldata
+URL: https://almartin82.github.io/nmschooldata, https://github.com/almartin82/nmschooldata
 BugReports: https://github.com/almartin82/nmschooldata/issues

@@ -2,19 +2,7 @@
 # Utility Functions
 # ==============================================================================
 
-#' Pipe operator
-#'
-#' See \code{dplyr::\link[dplyr:reexports]{\%>\%}} for details.
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
-#' @importFrom dplyr %>%
-#' @usage lhs \%>\% rhs
-#' @param lhs A value or the magrittr placeholder.
-#' @param rhs A function call using the magrittr semantics.
-#' @return The result of calling `rhs(lhs)`.
+#' @importFrom rlang .data
 NULL
 
 
@@ -76,6 +64,31 @@ get_valid_years <- function() {
   # - 2019-2023, 2025: Full 40D subgroup enrollment data
   # - 2024: Only 80D data available (40D subgroup file not published)
   2016:2025
+}
+
+
+#' Get available years for enrollment data
+#'
+#' Returns information about the range of school years for which enrollment
+#' data is available from the New Mexico Public Education Department.
+#'
+#' @return A list with three elements:
+#'   \describe{
+#'     \item{min_year}{The earliest available school year end (e.g., 2016 = 2015-16)}
+#'     \item{max_year}{The most recent available school year end (e.g., 2025 = 2024-25)}
+#'     \item{description}{A human-readable description of data availability}
+#'   }
+#' @export
+#' @examples
+#' years <- get_available_years()
+#' years$min_year
+#' years$max_year
+get_available_years <- function() {
+  list(
+    min_year = 2016,
+    max_year = 2025,
+    description = "New Mexico PED enrollment data is available from 2016 (2015-16 school year) through 2025 (2024-25 school year). Years 2016-2018 have enrollment by grade only (no demographic subgroups). Years 2019-2023 and 2025 have full demographic subgroups. Year 2024 only has 80-Day data available."
+  )
 }
 
 
