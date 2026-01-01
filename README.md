@@ -1,8 +1,9 @@
 # nmschooldata
 
 [![R-CMD-check](https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml)
+[![Python Tests](https://github.com/almartin82/nmschooldata/actions/workflows/python-test.yaml/badge.svg)](https://github.com/almartin82/nmschooldata/actions/workflows/python-test.yaml)
 
-Fetch and analyze New Mexico public school enrollment data from the New Mexico Public Education Department (PED).
+Fetch and analyze New Mexico school enrollment data from the New Mexico Public Education Department (PED) in R or Python.
 
 ## What can you find with nmschooldata?
 
@@ -209,6 +210,8 @@ remotes::install_github("almartin82/state-schooldata", subdir = "nmschooldata")
 
 ## Quick start
 
+### R
+
 ```r
 library(nmschooldata)
 library(dplyr)
@@ -233,6 +236,36 @@ enr_2023 %>%
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("hispanic", "white", "native_american", "black", "asian")) %>%
   select(subgroup, n_students, pct)
+```
+
+### Python
+
+```python
+import pynmschooldata as nm
+
+# Check available years
+years = nm.get_available_years()
+print(f"Data available: {years['min_year']}-{years['max_year']}")
+
+# Fetch one year
+enr_2023 = nm.fetch_enr(2023)
+
+# Fetch multiple years
+enr_multi = nm.fetch_enr_multi([2019, 2020, 2021, 2022, 2023])
+
+# State totals
+state_total = enr_2023[
+    (enr_2023['is_state'] == True) &
+    (enr_2023['subgroup'] == 'total') &
+    (enr_2023['grade_level'] == 'TOTAL')
+]
+
+# District breakdown
+districts = enr_2023[
+    (enr_2023['is_district'] == True) &
+    (enr_2023['subgroup'] == 'total') &
+    (enr_2023['grade_level'] == 'TOTAL')
+].sort_values('n_students', ascending=False)
 ```
 
 ## Data availability
