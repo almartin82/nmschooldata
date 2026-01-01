@@ -1,13 +1,10 @@
 Package: nmschooldata
-Title: Fetch and Process New Mexico School Data
+Title: New Mexico School Data
 Version: 0.1.0
 Authors@R:
     person("Al", "Martin", , "almartin@example.com", role = c("aut", "cre"))
-Description: Downloads and processes school data from the New Mexico Public
-    Education Department (PED). Provides functions for fetching enrollment data
-    from the STARS (Student Teacher Accountability Reporting System) and
-    transforming it into tidy format for analysis. Includes demographic breakdowns
-    by race/ethnicity and special populations.
+Description: A simple, consistent interface for accessing New Mexico
+    school data in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
