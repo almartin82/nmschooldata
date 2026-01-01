@@ -1,5 +1,7 @@
 # nmschooldata
 
+[![R-CMD-check](https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml)
+
 Fetch and analyze New Mexico public school enrollment data from the New Mexico Public Education Department (PED).
 
 ## What can you find with nmschooldata?
