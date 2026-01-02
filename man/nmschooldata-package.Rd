@@ -73,6 +73,7 @@ American student enrollment, particularly in districts near tribal lands.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://almartin82.github.io/nmschooldata}
   \item \url{https://github.com/almartin82/nmschooldata}
   \item Report bugs at \url{https://github.com/almartin82/nmschooldata/issues}
 }
