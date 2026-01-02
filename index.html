@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Fetch and Process New Mexico School Data • nmschooldata</title>
+<title>New Mexico School Data • nmschooldata</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Fetch and Process New Mexico School Data">
-<meta name="description" content="Downloads and processes school data from the New Mexico Public Education Department (PED). Provides functions for fetching enrollment data from the STARS (Student Teacher Accountability Reporting System) and transforming it into tidy format for analysis. Includes demographic breakdowns by race/ethnicity and special populations.">
-<meta property="og:description" content="Downloads and processes school data from the New Mexico Public Education Department (PED). Provides functions for fetching enrollment data from the STARS (Student Teacher Accountability Reporting System) and transforming it into tidy format for analysis. Includes demographic breakdowns by race/ethnicity and special populations.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="New Mexico School Data">
+<meta name="description" content="A simple, consistent interface for accessing New Mexico school data in Python and R.">
+<meta property="og:description" content="A simple, consistent interface for accessing New Mexico school data in Python and R.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -32,6 +32,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/enrollment_hooks.html">10 Insights from New Mexico School Enrollment Data</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -48,7 +54,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="nmschooldata">nmschooldata<a class="anchor" aria-label="anchor" href="#nmschooldata"></a>
 </h1></div>
-<p>Fetch and analyze New Mexico public school enrollment data from the New Mexico Public Education Department (PED).</p>
+<p><a href="https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/almartin82/nmschooldata/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/almartin82/nmschooldata/actions/workflows/python-test.yaml" class="external-link"><img src="https://github.com/almartin82/nmschooldata/actions/workflows/python-test.yaml/badge.svg" alt="Python Tests"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
+<p>Fetch and analyze New Mexico school enrollment data from the New Mexico Public Education Department (PED) in R or Python.</p>
 <div class="section level2">
 <h2 id="what-can-you-find-with-nmschooldata">What can you find with nmschooldata?<a class="anchor" aria-label="anchor" href="#what-can-you-find-with-nmschooldata"></a>
 </h2>
@@ -59,7 +66,7 @@
 </h3>
 <p>New Mexico is one of the most diverse states in the nation. Hispanic students make up over 60% of enrollment, with significant Native American representation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/almartin82/nmschooldata" class="external-link">nmschooldata</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nmschooldata">nmschooldata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2023</span><span class="op">)</span></span>
@@ -218,6 +225,13 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="enrollment-visualizations">Enrollment Visualizations<a class="anchor" aria-label="anchor" href="#enrollment-visualizations"></a>
+</h2>
+<p><img src="https://almartin82.github.io/nmschooldata/articles/enrollment_hooks_files/figure-html/statewide-chart-1.png" alt="New Mexico statewide enrollment trends" width="600"></p>
+<p><img src="https://almartin82.github.io/nmschooldata/articles/enrollment_hooks_files/figure-html/top-districts-chart-1.png" alt="Top New Mexico districts" width="600"></p>
+<p>See the <a href="https://almartin82.github.io/nmschooldata/articles/enrollment_hooks.html">full vignette</a> for more insights.</p>
+</div>
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -227,8 +241,11 @@
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
+<div class="section level3">
+<h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
+</h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/almartin82/nmschooldata" class="external-link">nmschooldata</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nmschooldata">nmschooldata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fetch one year</span></span>
@@ -251,6 +268,36 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
 <span>         <span class="va">subgroup</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hispanic"</span>, <span class="st">"white"</span>, <span class="st">"native_american"</span>, <span class="st">"black"</span>, <span class="st">"asian"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a>
+</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="im">import</span> pynmschooldata <span class="im">as</span> nm</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># Check available years</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>years <span class="op">=</span> nm.get_available_years()</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data available: </span><span class="sc">{</span>years[<span class="st">'min_year'</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>years[<span class="st">'max_year'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co"># Fetch one year</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>enr_2023 <span class="op">=</span> nm.fetch_enr(<span class="dv">2023</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co"># Fetch multiple years</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>enr_multi <span class="op">=</span> nm.fetch_enr_multi([<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>])</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co"># State totals</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>state_total <span class="op">=</span> enr_2023[</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>    (enr_2023[<span class="st">'is_state'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    (enr_2023[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total'</span>) <span class="op">&amp;</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    (enr_2023[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>]</span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a><span class="co"># District breakdown</span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>districts <span class="op">=</span> enr_2023[</span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a>    (enr_2023[<span class="st">'is_district'</span>] <span class="op">==</span> <span class="va">True</span>) <span class="op">&amp;</span></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a>    (enr_2023[<span class="st">'subgroup'</span>] <span class="op">==</span> <span class="st">'total'</span>) <span class="op">&amp;</span></span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a>    (enr_2023[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)</span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a>].sort_values(<span class="st">'n_students'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="data-availability">Data availability<a class="anchor" aria-label="anchor" href="#data-availability"></a>
@@ -313,11 +360,10 @@
 <p>New Mexico Public Education Department: - <a href="https://webnew.ped.state.nm.us/" class="external-link">PED Main</a> - <a href="https://web.ped.nm.gov/bureaus/information-technology/stars/" class="external-link">STARS System</a> - <a href="https://nmvistas.org/" class="external-link">NM Vistas</a></p>
 </div>
 <div class="section level2">
-<h2 id="part-of-the-50-state-schooldata-family">Part of the 50 State Schooldata Family<a class="anchor" aria-label="anchor" href="#part-of-the-50-state-schooldata-family"></a>
+<h2 id="part-of-the-state-schooldata-project">Part of the State Schooldata Project<a class="anchor" aria-label="anchor" href="#part-of-the-state-schooldata-project"></a>
 </h2>
-<p>This package is part of a family of R packages providing school enrollment data for all 50 US states. Each package fetches data directly from the state’s Department of Education.</p>
-<p><strong>See also:</strong> <a href="https://github.com/almartin82/njschooldata" class="external-link">njschooldata</a> - The original state schooldata package for New Jersey.</p>
-<p><strong>All packages:</strong> <a href="https://github.com/almartin82?tab=repositories&amp;q=schooldata" class="external-link">github.com/almartin82</a></p>
+<p>A simple, consistent interface for accessing state-published school data in Python and R.</p>
+<p><strong>All 50 state packages:</strong> <a href="https://github.com/almartin82?tab=repositories&amp;q=schooldata" class="external-link">github.com/almartin82</a></p>
 </div>
 <div class="section level2">
 <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a>

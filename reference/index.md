@@ -6,6 +6,8 @@
   : Fetch New Mexico enrollment data
 - [`fetch_enr_multi()`](https://almartin82.github.io/nmschooldata/reference/fetch_enr_multi.md)
   : Fetch enrollment data for multiple years
+- [`get_valid_years()`](https://almartin82.github.io/nmschooldata/reference/get_valid_years.md)
+  : Get valid enrollment years
 
 ## Process & Tidy
 
