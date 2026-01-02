@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   fig.width = 8,
-  fig.height = 5,
-  eval = FALSE
+  fig.height = 5
 )
 ```
 
@@ -37,7 +36,8 @@ This vignette explores New Mexico's public school enrollment data, surfacing key
 Like many western states, New Mexico's K-12 enrollment has been steadily declining over the past several years, with COVID accelerating the trend.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(2019:2025)
+# Note: 2024 excluded as only 80-Day data is available (no 40-Day subgroup file)
+enr <- fetch_enr_multi(c(2019:2023, 2025))
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
@@ -54,7 +54,7 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_point(size = 3, color = "#C41230") +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "New Mexico Public School Enrollment (2019-2025)",
+    title = "New Mexico Public School Enrollment (2019-2023, 2025)",
     subtitle = "Steady decline accelerated by COVID-19",
     x = "School Year (ending)",
     y = "Total Enrollment"
@@ -156,7 +156,7 @@ New Mexico kindergarten enrollment dropped significantly during COVID and hasn't
 covid_grades <- enr |>
   filter(is_state, subgroup == "total",
          grade_level %in% c("K", "01", "06", "09"),
-         end_year %in% 2019:2025) |>
+         end_year %in% c(2019:2023, 2025)) |>
   select(end_year, grade_level, n_students) |>
   pivot_wider(names_from = grade_level, values_from = n_students)
 
