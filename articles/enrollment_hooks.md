@@ -22,7 +22,8 @@ declining over the past several years, with COVID accelerating the
 trend.
 
 ``` r
-enr <- fetch_enr_multi(2019:2025)
+# Note: 2024 excluded as only 80-Day data is available (no 40-Day subgroup file)
+enr <- fetch_enr_multi(c(2019:2023, 2025))
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
@@ -31,6 +32,13 @@ state_totals <- enr |>
          pct_change = round(change / lag(n_students) * 100, 2))
 
 state_totals
+#>   end_year n_students change pct_change
+#> 1     2019     335131     NA         NA
+#> 2     2020     332672  -2459      -0.73
+#> 3     2021     318349 -14323      -4.31
+#> 4     2022     318353      4       0.00
+#> 5     2023     316478  -1875      -0.59
+#> 6     2025     306686  -9792      -3.09
 ```
 
 ``` r
@@ -39,12 +47,14 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_point(size = 3, color = "#C41230") +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "New Mexico Public School Enrollment (2019-2025)",
+    title = "New Mexico Public School Enrollment (2019-2023, 2025)",
     subtitle = "Steady decline accelerated by COVID-19",
     x = "School Year (ending)",
     y = "Total Enrollment"
   )
 ```
+
+![](enrollment_hooks_files/figure-html/statewide-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -63,6 +73,17 @@ top_districts <- enr |>
   select(district_name, n_students)
 
 top_districts
+#>    district_name n_students
+#> 1    ALBUQUERQUE      75040
+#> 2     LAS CRUCES      22709
+#> 3     RIO RANCHO      16463
+#> 4         GALLUP      12737
+#> 5        GADSDEN      11739
+#> 6       SANTA FE      11226
+#> 7     FARMINGTON      10768
+#> 8          HOBBS      10119
+#> 9        ROSWELL       9184
+#> 10     LOS LUNAS       8208
 ```
 
 ``` r
@@ -80,6 +101,8 @@ top_districts |>
     y = NULL
   )
 ```
+
+![](enrollment_hooks_files/figure-html/top-districts-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -100,6 +123,13 @@ demographics <- enr_2025 |>
   arrange(desc(n_students))
 
 demographics
+#>          subgroup n_students  pct
+#> 1        hispanic     194595 63.5
+#> 2           white      61345 20.0
+#> 3 native_american      30602 10.0
+#> 4     multiracial       7221  2.4
+#> 5           black       5580  1.8
+#> 6           asian       3926  1.3
 ```
 
 ``` r
@@ -118,6 +148,8 @@ demographics |>
   )
 ```
 
+![](enrollment_hooks_files/figure-html/demographics-chart-1.png)
+
 ------------------------------------------------------------------------
 
 ## 4. The Native American education landscape
@@ -135,43 +167,63 @@ native_am <- enr_2025 |>
   mutate(pct = round(pct * 100, 1))
 
 native_am
+#>    district_name n_students  pct
+#> 1         GALLUP       8027 63.0
+#> 2    ALBUQUERQUE       4093  5.5
+#> 3        CENTRAL       3903 86.4
+#> 4     FARMINGTON       3896 36.2
+#> 5         GRANTS       1472 48.2
+#> 6     BERNALILLO       1272 45.9
+#> 7           ZUNI        966 91.8
+#> 8     BLOOMFIELD        961 40.2
+#> 9     RIO RANCHO        637  3.9
+#> 10          CUBA        508 70.5
 ```
 
 ------------------------------------------------------------------------
 
-## 5. COVID crushed kindergarten
+## 5. COVID crushed enrollment
 
-New Mexico kindergarten enrollment dropped significantly during COVID
-and hasn’t fully recovered, signaling smaller cohorts for years to come.
+New Mexico school enrollment dropped significantly during COVID and
+hasn’t fully recovered, signaling demographic challenges for years to
+come.
 
 ``` r
-covid_grades <- enr |>
-  filter(is_state, subgroup == "total",
-         grade_level %in% c("K", "01", "06", "09"),
-         end_year %in% 2019:2025) |>
-  select(end_year, grade_level, n_students) |>
-  pivot_wider(names_from = grade_level, values_from = n_students)
+# Note: Individual grade breakdowns not available in 40-Day subgroup files (2019-2023, 2025)
+# Using Era 1 (2016-2018) and 2024 (80-Day) for grade-level analysis
+enr_grades <- fetch_enr_multi(c(2016:2018, 2024))
 
-covid_grades
+state_totals_by_era <- enr_grades |>
+  filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
+  select(end_year, n_students)
+
+state_totals_by_era
+#>   end_year n_students
+#> 1     2016     339613
+#> 2     2017     338307
+#> 3     2018     337847
+#> 4     2024     308913
 ```
 
 ``` r
-enr |>
-  filter(is_state, subgroup == "total",
-         grade_level %in% c("K", "01", "06", "09")) |>
-  ggplot(aes(x = end_year, y = n_students, color = grade_level)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  scale_y_continuous(labels = scales::comma) +
-  scale_color_brewer(palette = "Set1") +
+# Show overall enrollment decline using all available years
+all_years <- fetch_enr_multi(2016:2025)
+
+all_years |>
+  filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
+  ggplot(aes(x = end_year, y = n_students)) +
+  geom_line(linewidth = 1.2, color = "#C41230") +
+  geom_point(size = 3, color = "#C41230") +
+  scale_y_continuous(labels = scales::comma, limits = c(300000, 350000)) +
   labs(
-    title = "Enrollment by Grade Level Over Time",
-    subtitle = "Kindergarten shows steepest COVID-era decline",
-    x = "School Year",
-    y = "Students",
-    color = "Grade"
+    title = "New Mexico Public School Enrollment (2016-2025)",
+    subtitle = "Steady decline accelerated by COVID-19",
+    x = "School Year (ending)",
+    y = "Total Enrollment"
   )
 ```
+
+![](enrollment_hooks_files/figure-html/enrollment-decline-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -188,6 +240,8 @@ abq_lc <- enr |>
   pivot_wider(names_from = end_year, values_from = n_students)
 
 abq_lc
+#> # A tibble: 0 × 1
+#> # ℹ 1 variable: district_name <chr>
 ```
 
 ``` r
@@ -206,6 +260,8 @@ enr |>
     color = "District"
   )
 ```
+
+![](enrollment_hooks_files/figure-html/abq-lc-chart-1.png)
 
 ------------------------------------------------------------------------
 

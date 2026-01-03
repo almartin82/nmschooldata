@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/enrollment_hooks.html">10 Insights from New Mexico School Enrollment Data</a></li>
+<li><a class="dropdown-item" href="../articles/data_availability.html">Understanding NM PED Data Availability</a></li>
+    <li><a class="dropdown-item" href="../articles/enrollment_hooks.html">10 Insights from New Mexico School Enrollment Data</a></li>
   </ul>
 </li>
       </ul>
@@ -82,7 +83,8 @@ surfacing key trends and demographic patterns across 10 years of data
 steadily declining over the past several years, with COVID accelerating
 the trend.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Note: 2024 excluded as only 80-Day data is available (no 40-Day subgroup file)</span></span>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2023</span>, <span class="fl">2025</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_totals</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -90,18 +92,26 @@ the trend.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">n_students</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span>,</span>
 <span>         pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">state_totals</span></span></code></pre></div>
+<span><span class="va">state_totals</span></span>
+<span><span class="co">#&gt;   end_year n_students change pct_change</span></span>
+<span><span class="co">#&gt; 1     2019     335131     NA         NA</span></span>
+<span><span class="co">#&gt; 2     2020     332672  -2459      -0.73</span></span>
+<span><span class="co">#&gt; 3     2021     318349 -14323      -4.31</span></span>
+<span><span class="co">#&gt; 4     2022     318353      4       0.00</span></span>
+<span><span class="co">#&gt; 5     2023     316478  -1875      -0.59</span></span>
+<span><span class="co">#&gt; 6     2025     306686  -9792      -3.09</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">state_totals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"New Mexico Public School Enrollment (2019-2025)"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"New Mexico Public School Enrollment (2019-2023, 2025)"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="st">"Steady decline accelerated by COVID-19"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"School Year (ending)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Total Enrollment"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="enrollment_hooks_files/figure-html/statewide-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -118,10 +128,21 @@ the state average.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">top_districts</span></span></code></pre></div>
+<span><span class="va">top_districts</span></span>
+<span><span class="co">#&gt;    district_name n_students</span></span>
+<span><span class="co">#&gt; 1    ALBUQUERQUE      75040</span></span>
+<span><span class="co">#&gt; 2     LAS CRUCES      22709</span></span>
+<span><span class="co">#&gt; 3     RIO RANCHO      16463</span></span>
+<span><span class="co">#&gt; 4         GALLUP      12737</span></span>
+<span><span class="co">#&gt; 5        GADSDEN      11739</span></span>
+<span><span class="co">#&gt; 6       SANTA FE      11226</span></span>
+<span><span class="co">#&gt; 7     FARMINGTON      10768</span></span>
+<span><span class="co">#&gt; 8          HOBBS      10119</span></span>
+<span><span class="co">#&gt; 9        ROSWELL       9184</span></span>
+<span><span class="co">#&gt; 10     LOS LUNAS       8208</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top_districts</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>district_name <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu">fct_reorder</span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>district_name <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">n_students</span>, y <span class="op">=</span> <span class="va">district_name</span>, fill <span class="op">=</span> <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, size <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="op">+</span></span>
@@ -133,6 +154,7 @@ the state average.</p>
 <span>    x <span class="op">=</span> <span class="st">"Total Enrollment"</span>,</span>
 <span>    y <span class="op">=</span> <span class="cn">NULL</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="enrollment_hooks_files/figure-html/top-districts-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -151,10 +173,17 @@ American representation.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">demographics</span></span></code></pre></div>
+<span><span class="va">demographics</span></span>
+<span><span class="co">#&gt;          subgroup n_students  pct</span></span>
+<span><span class="co">#&gt; 1        hispanic     194595 63.5</span></span>
+<span><span class="co">#&gt; 2           white      61345 20.0</span></span>
+<span><span class="co">#&gt; 3 native_american      30602 10.0</span></span>
+<span><span class="co">#&gt; 4     multiracial       7221  2.4</span></span>
+<span><span class="co">#&gt; 5           black       5580  1.8</span></span>
+<span><span class="co">#&gt; 6           asian       3926  1.3</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demographics</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>subgroup <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu">fct_reorder</span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>subgroup <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder</a></span><span class="op">(</span><span class="va">subgroup</span>, <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">n_students</span>, y <span class="op">=</span> <span class="va">subgroup</span>, fill <span class="op">=</span> <span class="va">subgroup</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pct</span>, <span class="st">"%"</span><span class="op">)</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
@@ -166,6 +195,7 @@ American representation.</p>
 <span>    x <span class="op">=</span> <span class="st">"Number of Students"</span>,</span>
 <span>    y <span class="op">=</span> <span class="cn">NULL</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="enrollment_hooks_files/figure-html/demographics-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -182,40 +212,58 @@ and numerous Pueblos.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">n_students</span>, <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pct</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">native_am</span></span></code></pre></div>
+<span><span class="va">native_am</span></span>
+<span><span class="co">#&gt;    district_name n_students  pct</span></span>
+<span><span class="co">#&gt; 1         GALLUP       8027 63.0</span></span>
+<span><span class="co">#&gt; 2    ALBUQUERQUE       4093  5.5</span></span>
+<span><span class="co">#&gt; 3        CENTRAL       3903 86.4</span></span>
+<span><span class="co">#&gt; 4     FARMINGTON       3896 36.2</span></span>
+<span><span class="co">#&gt; 5         GRANTS       1472 48.2</span></span>
+<span><span class="co">#&gt; 6     BERNALILLO       1272 45.9</span></span>
+<span><span class="co">#&gt; 7           ZUNI        966 91.8</span></span>
+<span><span class="co">#&gt; 8     BLOOMFIELD        961 40.2</span></span>
+<span><span class="co">#&gt; 9     RIO RANCHO        637  3.9</span></span>
+<span><span class="co">#&gt; 10          CUBA        508 70.5</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="covid-crushed-kindergarten">5. COVID crushed kindergarten<a class="anchor" aria-label="anchor" href="#covid-crushed-kindergarten"></a>
+<h2 id="covid-crushed-enrollment">5. COVID crushed enrollment<a class="anchor" aria-label="anchor" href="#covid-crushed-enrollment"></a>
 </h2>
-<p>New Mexico kindergarten enrollment dropped significantly during COVID
-and hasn’t fully recovered, signaling smaller cohorts for years to
+<p>New Mexico school enrollment dropped significantly during COVID and
+hasn’t fully recovered, signaling demographic challenges for years to
 come.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">covid_grades</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>,</span>
-<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"06"</span>, <span class="st">"09"</span><span class="op">)</span>,</span>
-<span>         <span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">2019</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Note: Individual grade breakdowns not available in 40-Day subgroup files (2019-2023, 2025)</span></span>
+<span><span class="co"># Using Era 1 (2016-2018) and 2024 (80-Day) for grade-level analysis</span></span>
+<span><span class="va">enr_grades</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2016</span><span class="op">:</span><span class="fl">2018</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">covid_grades</span></span></code></pre></div>
+<span><span class="va">state_totals_by_era</span> <span class="op">&lt;-</span> <span class="va">enr_grades</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">state_totals_by_era</span></span>
+<span><span class="co">#&gt;   end_year n_students</span></span>
+<span><span class="co">#&gt; 1     2016     339613</span></span>
+<span><span class="co">#&gt; 2     2017     338307</span></span>
+<span><span class="co">#&gt; 3     2018     337847</span></span>
+<span><span class="co">#&gt; 4     2024     308913</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>,</span>
-<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"06"</span>, <span class="st">"09"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span>, color <span class="op">=</span> <span class="va">grade_level</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="co"># Show overall enrollment decline using all available years</span></span>
+<span><span class="va">all_years</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2016</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">all_years</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300000</span>, <span class="fl">350000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Enrollment by Grade Level Over Time"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Kindergarten shows steepest COVID-era decline"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"School Year"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Students"</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"Grade"</span></span>
+<span>    title <span class="op">=</span> <span class="st">"New Mexico Public School Enrollment (2016-2025)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Steady decline accelerated by COVID-19"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"School Year (ending)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Total Enrollment"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="enrollment_hooks_files/figure-html/enrollment-decline-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -230,7 +278,9 @@ but their enrollment trajectories have differed.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">abq_lc</span></span></code></pre></div>
+<span><span class="va">abq_lc</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 variable: district_name &lt;chr&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enr</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>,</span>
@@ -246,6 +296,7 @@ but their enrollment trajectories have differed.</p>
 <span>    y <span class="op">=</span> <span class="st">"Enrollment"</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"District"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
+<p><img src="enrollment_hooks_files/figure-html/abq-lc-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">
