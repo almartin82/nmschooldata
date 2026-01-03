@@ -159,43 +159,48 @@ native_am
 
 ------------------------------------------------------------------------
 
-## 5. COVID crushed kindergarten
+## 5. COVID crushed enrollment
 
-New Mexico kindergarten enrollment dropped significantly during COVID
-and hasn’t fully recovered, signaling smaller cohorts for years to come.
+New Mexico school enrollment dropped significantly during COVID and
+hasn’t fully recovered, signaling demographic challenges for years to
+come.
 
 ``` r
-covid_grades <- enr |>
-  filter(is_state, subgroup == "total",
-         grade_level %in% c("K", "01", "06", "09"),
-         end_year %in% c(2019:2023, 2025)) |>
-  select(end_year, grade_level, n_students) |>
-  pivot_wider(names_from = grade_level, values_from = n_students)
+# Note: Individual grade breakdowns not available in 40-Day subgroup files (2019-2023, 2025)
+# Using Era 1 (2016-2018) and 2024 (80-Day) for grade-level analysis
+enr_grades <- fetch_enr_multi(c(2016:2018, 2024))
 
-covid_grades
-#> # A tibble: 0 × 1
-#> # ℹ 1 variable: end_year <dbl>
+state_totals_by_era <- enr_grades |>
+  filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
+  select(end_year, n_students)
+
+state_totals_by_era
+#>   end_year n_students
+#> 1     2016     339613
+#> 2     2017     338307
+#> 3     2018     337847
+#> 4     2024     308913
 ```
 
 ``` r
-enr |>
-  filter(is_state, subgroup == "total",
-         grade_level %in% c("K", "01", "06", "09")) |>
-  ggplot(aes(x = end_year, y = n_students, color = grade_level)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  scale_y_continuous(labels = scales::comma) +
-  scale_color_brewer(palette = "Set1") +
+# Show overall enrollment decline using all available years
+all_years <- fetch_enr_multi(2016:2025)
+
+all_years |>
+  filter(is_state, subgroup == "total", grade_level == "TOTAL") |>
+  ggplot(aes(x = end_year, y = n_students)) +
+  geom_line(linewidth = 1.2, color = "#C41230") +
+  geom_point(size = 3, color = "#C41230") +
+  scale_y_continuous(labels = scales::comma, limits = c(300000, 350000)) +
   labs(
-    title = "Enrollment by Grade Level Over Time",
-    subtitle = "Kindergarten shows steepest COVID-era decline",
-    x = "School Year",
-    y = "Students",
-    color = "Grade"
+    title = "New Mexico Public School Enrollment (2016-2025)",
+    subtitle = "Steady decline accelerated by COVID-19",
+    x = "School Year (ending)",
+    y = "Total Enrollment"
   )
 ```
 
-![](enrollment_hooks_files/figure-html/growth-chart-1.png)
+![](enrollment_hooks_files/figure-html/enrollment-decline-chart-1.png)
 
 ------------------------------------------------------------------------
 

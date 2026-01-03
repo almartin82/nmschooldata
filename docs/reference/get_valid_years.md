@@ -18,6 +18,8 @@ Data availability by year:
 
 - 2016-2018: Enrollment by grade only (no demographic subgroups)
 
-- 2019-2023, 2025: Full demographic subgroups available
+- 2019-2023: Full 40D subgroup enrollment data
 
-- 2024: Only 80-Day data available (40-Day subgroup file not published)
+- 2024: 80D data only (grade counts by district, no subgroups)
+
+- 2025: Full 40D subgroup enrollment data

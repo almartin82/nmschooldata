@@ -82,6 +82,8 @@ lands.
 
 Useful links:
 
+- <https://almartin82.github.io/nmschooldata>
+
 - <https://github.com/almartin82/nmschooldata>
 
 - Report bugs at <https://github.com/almartin82/nmschooldata/issues>

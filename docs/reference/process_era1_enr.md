@@ -1,6 +1,8 @@
 # Process Era 1 enrollment data (2016-2018)
 
 Era 1 data only has enrollment by grade, without demographic subgroups.
+The raw data contains both school-level rows and district "Total" rows.
+District rows have DISTRICT CODE = "Total".
 
 ## Usage
 
