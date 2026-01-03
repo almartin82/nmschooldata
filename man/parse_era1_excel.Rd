@@ -16,6 +16,7 @@ Data frame with enrollment data
 }
 \description{
 Older NM PED enrollment files contain only total enrollment by grade,
-without demographic subgroup breakdowns.
+without demographic subgroup breakdowns. These files have 8 header rows
+that need to be skipped.
 }
 \keyword{internal}
