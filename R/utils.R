@@ -51,7 +51,9 @@ clean_names <- function(names) {
 #' Data availability by year:
 #' \itemize{
 #'   \item 2016-2018: Enrollment by grade only (no demographic subgroups)
-#'   \item 2019-2024: Full demographic subgroups available
+#'   \item 2019-2023: Full 40D subgroup enrollment data
+#'   \item 2024: 80D data only (grade counts by district, no subgroups)
+#'   \item 2025: Full 40D subgroup enrollment data
 #' }
 #'
 #' @return Vector of valid end years
@@ -60,8 +62,10 @@ get_valid_years <- function() {
 
   # Available years based on NM PED website research:
   # - 2016-2018: Enrollment by district/location/grade only (no subgroups)
-  # - 2019-2024: Full 40D subgroup enrollment data
-  2016:2024
+  # - 2019-2023: Full 40D subgroup enrollment data
+  # - 2024: 80D data only (no 40D subgroup file published)
+  # - 2025: Full 40D subgroup enrollment data
+  2016:2025
 }
 
 
@@ -73,7 +77,7 @@ get_valid_years <- function() {
 #' @return A list with three elements:
 #'   \describe{
 #'     \item{min_year}{The earliest available school year end (e.g., 2016 = 2015-16)}
-#'     \item{max_year}{The most recent available school year end (e.g., 2024 = 2023-24)}
+#'     \item{max_year}{The most recent available school year end (e.g., 2025 = 2024-25)}
 #'     \item{description}{A human-readable description of data availability}
 #'   }
 #' @export
@@ -84,8 +88,14 @@ get_valid_years <- function() {
 get_available_years <- function() {
   list(
     min_year = 2016,
-    max_year = 2024,
-    description = "New Mexico PED enrollment data is available from 2016 (2015-16 school year) through 2024 (2023-24 school year). Years 2016-2018 have enrollment by grade only (no demographic subgroups). Years 2019-2024 have full demographic subgroups."
+    max_year = 2025,
+    description = paste0(
+      "New Mexico PED enrollment data is available from 2016 (2015-16 school year) ",
+      "through 2025 (2024-25 school year). ",
+      "Years 2016-2018 have enrollment by grade only (no demographic subgroups). ",
+      "Years 2019-2023 and 2025 have full 40-Day demographic subgroups. ",
+      "Year 2024 only has 80-Day enrollment by district/grade (no subgroups)."
+    )
   )
 }
 

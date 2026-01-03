@@ -16,6 +16,11 @@ Processed data frame
 }
 \description{
 Era 2 data includes demographic subgroups by race/ethnicity and
-special populations.
+special populations. Handles multiple year formats:
+\itemize{
+\item 2019-2023: 40D subgroup data
+\item 2024: 80D grade counts only (no subgroups)
+\item 2025: 40D subgroup data with new column naming
+}
 }
 \keyword{internal}

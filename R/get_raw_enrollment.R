@@ -239,7 +239,8 @@ build_enrollment_urls <- function(end_year) {
 #' Parse Era 1 Excel file (2016-2018)
 #'
 #' Older NM PED enrollment files contain only total enrollment by grade,
-#' without demographic subgroup breakdowns.
+#' without demographic subgroup breakdowns. These files have 8 header rows
+#' that need to be skipped.
 #'
 #' @param excel_path Path to downloaded Excel file
 #' @param end_year School year end
@@ -250,12 +251,14 @@ parse_era1_excel <- function(excel_path, end_year) {
   sheets <- readxl::excel_sheets(excel_path)
   message(paste("  Available sheets:", paste(sheets, collapse = ", ")))
 
-  # Read the first sheet (usually the only one or the main data)
+  # Era 1 files have 8 header rows to skip
+  # Row 9 contains the actual column headers
   data <- readxl::read_excel(
     excel_path,
     sheet = 1,
+    skip = 8,
     col_types = "text",
-    .name_repair = "minimal"
+    .name_repair = "unique_quiet"
   )
 
   # Clean column names
@@ -272,7 +275,11 @@ parse_era1_excel <- function(excel_path, end_year) {
 #' Parse Era 2 Excel file (2019-present)
 #'
 #' Newer NM PED enrollment files include demographic subgroup breakdowns
-#' by race/ethnicity and special populations.
+#' by race/ethnicity and special populations. Different year files have
+#' different structures:
+#' - 2019-2023: Have 10 header rows to skip, single sheet named "Masked"
+#' - 2024: 80-Day file with NO header rows, district-level only, grade columns
+#' - 2025: NO header rows, three sheets (by School, by District, State)
 #'
 #' @param excel_path Path to downloaded Excel file
 #' @param end_year School year end
@@ -283,13 +290,28 @@ parse_era2_excel <- function(excel_path, end_year) {
   sheets <- readxl::excel_sheets(excel_path)
   message(paste("  Available sheets:", paste(sheets, collapse = ", ")))
 
-  # Read the first sheet
-  data <- readxl::read_excel(
-    excel_path,
-    sheet = 1,
-    col_types = "text",
-    .name_repair = "minimal"
-  )
+  if (end_year == 2025) {
+    # 2025 has three sheets: "SY25 by School", "SY25 by District", "SY25 State"
+    # Read all three and combine
+    data <- parse_2025_excel(excel_path, sheets)
+  } else if (end_year == 2024) {
+    # 2024 80-Day file has NO header rows, column names in first row
+    data <- readxl::read_excel(
+      excel_path,
+      sheet = 1,
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+  } else {
+    # 2019-2023: Have 10 header rows to skip
+    data <- readxl::read_excel(
+      excel_path,
+      sheet = 1,
+      skip = 10,
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+  }
 
   # Clean column names
   names(data) <- clean_names(names(data))
@@ -299,6 +321,74 @@ parse_era2_excel <- function(excel_path, end_year) {
   data$data_era <- 2L
 
   data
+}
+
+
+#' Parse 2025 Excel file with multiple sheets
+#'
+#' The 2025 file has three sheets that need to be combined:
+#' - "SY25 by School": School-level data
+#' - "SY25 by District": District-level aggregates
+#' - "SY25 State": State-level aggregate
+#'
+#' @param excel_path Path to downloaded Excel file
+#' @param sheets Vector of sheet names
+#' @return Combined data frame
+#' @keywords internal
+parse_2025_excel <- function(excel_path, sheets) {
+
+  # Read each sheet
+  school_sheet <- grep("by School", sheets, value = TRUE, ignore.case = TRUE)
+  district_sheet <- grep("by District", sheets, value = TRUE, ignore.case = TRUE)
+  state_sheet <- grep("State", sheets, value = TRUE, ignore.case = TRUE)
+
+  result <- list()
+
+  if (length(school_sheet) > 0) {
+    school_data <- readxl::read_excel(
+      excel_path,
+      sheet = school_sheet[1],
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+    school_data$sheet_type <- "School"
+    result <- c(result, list(school_data))
+  }
+
+  if (length(district_sheet) > 0) {
+    district_data <- readxl::read_excel(
+      excel_path,
+      sheet = district_sheet[1],
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+    district_data$sheet_type <- "District"
+    result <- c(result, list(district_data))
+  }
+
+  if (length(state_sheet) > 0) {
+    state_data <- readxl::read_excel(
+      excel_path,
+      sheet = state_sheet[1],
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+    state_data$sheet_type <- "State"
+    result <- c(result, list(state_data))
+  }
+
+  # Combine all sheets
+  if (length(result) > 0) {
+    dplyr::bind_rows(result)
+  } else {
+    # Fallback: read first sheet
+    readxl::read_excel(
+      excel_path,
+      sheet = 1,
+      col_types = "text",
+      .name_repair = "unique_quiet"
+    )
+  }
 }
 
 
