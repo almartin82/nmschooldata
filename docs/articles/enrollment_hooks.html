@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/enrollment_hooks.html">10 Insights from New Mexico School Enrollment Data</a></li>
+<li><a class="dropdown-item" href="../articles/data_availability.html">Understanding NM PED Data Availability</a></li>
+    <li><a class="dropdown-item" href="../articles/enrollment_hooks.html">10 Insights from New Mexico School Enrollment Data</a></li>
   </ul>
 </li>
       </ul>
@@ -203,39 +204,43 @@ and numerous Pueblos.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="covid-crushed-kindergarten">5. COVID crushed kindergarten<a class="anchor" aria-label="anchor" href="#covid-crushed-kindergarten"></a>
+<h2 id="covid-crushed-enrollment">5. COVID crushed enrollment<a class="anchor" aria-label="anchor" href="#covid-crushed-enrollment"></a>
 </h2>
-<p>New Mexico kindergarten enrollment dropped significantly during COVID
-and hasn’t fully recovered, signaling smaller cohorts for years to
+<p>New Mexico school enrollment dropped significantly during COVID and
+hasn’t fully recovered, signaling demographic challenges for years to
 come.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">covid_grades</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>,</span>
-<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"06"</span>, <span class="st">"09"</span><span class="op">)</span>,</span>
-<span>         <span class="va">end_year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2023</span>, <span class="fl">2025</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Note: Individual grade breakdowns not available in 40-Day subgroup files (2019-2023, 2025)</span></span>
+<span><span class="co"># Using Era 1 (2016-2018) and 2024 (80-Day) for grade-level analysis</span></span>
+<span><span class="va">enr_grades</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2016</span><span class="op">:</span><span class="fl">2018</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">covid_grades</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 1</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 variable: end_year &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="va">state_totals_by_era</span> <span class="op">&lt;-</span> <span class="va">enr_grades</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">n_students</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">state_totals_by_era</span></span>
+<span><span class="co">#&gt;   end_year n_students</span></span>
+<span><span class="co">#&gt; 1     2016     339613</span></span>
+<span><span class="co">#&gt; 2     2017     338307</span></span>
+<span><span class="co">#&gt; 3     2018     337847</span></span>
+<span><span class="co">#&gt; 4     2024     308913</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>,</span>
-<span>         <span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"06"</span>, <span class="st">"09"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span>, color <span class="op">=</span> <span class="va">grade_level</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="co"># Show overall enrollment decline using all available years</span></span>
+<span><span class="va">all_years</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_multi.html">fetch_enr_multi</a></span><span class="op">(</span><span class="fl">2016</span><span class="op">:</span><span class="fl">2025</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">all_years</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_state</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, color <span class="op">=</span> <span class="st">"#C41230"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300000</span>, <span class="fl">350000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Enrollment by Grade Level Over Time"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Kindergarten shows steepest COVID-era decline"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"School Year"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Students"</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"Grade"</span></span>
+<span>    title <span class="op">=</span> <span class="st">"New Mexico Public School Enrollment (2016-2025)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Steady decline accelerated by COVID-19"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"School Year (ending)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Total Enrollment"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="enrollment_hooks_files/figure-html/growth-chart-1.png" class="r-plt" alt="" width="768"></p>
+<p><img src="enrollment_hooks_files/figure-html/enrollment-decline-chart-1.png" class="r-plt" alt="" width="768"></p>
 <hr>
 </div>
 <div class="section level2">

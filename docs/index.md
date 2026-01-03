@@ -293,22 +293,24 @@ districts = enr_2023[
 
 ## Data availability
 
-| Years               | Source                | Aggregation Levels      | Demographics                                              | Notes                               |
-|---------------------|-----------------------|-------------------------|-----------------------------------------------------------|-------------------------------------|
-| **2019-2023, 2025** | 40-Day subgroup files | State, District, School | Race, Gender, Special Populations (EL, Econ Disadv, SpEd) | Full demographic detail             |
-| **2024**            | 80-Day file only      | State, District, School | Limited                                                   | 40D subgroup file not yet published |
-| **2016-2018**       | 40-Day enrollment     | State, District, School | Grade-level only                                          | No demographic subgroups            |
+| Years         | Source            | Aggregation Levels      | Demographics | Grade Breakdown |
+|---------------|-------------------|-------------------------|--------------|-----------------|
+| **2025**      | 40-Day subgroup   | State, District, School | 13 subgroups | TOTAL only      |
+| **2024**      | 80-Day only       | State, District         | None         | PK through 12   |
+| **2019-2023** | 40-Day subgroup   | State, School           | 13 subgroups | TOTAL only      |
+| **2016-2018** | 40-Day enrollment | State, District, School | None         | PK through 12   |
 
 ### What’s available by year range
 
-- **Demographics**: Race/ethnicity, gender, and special populations
-  (ELL, economically disadvantaged, special education) available 2019+.
-  Only grade-level counts for 2016-2018.
-- **Aggregation**: Package computes state aggregates from district data.
-  District and school levels included in raw data.
+- **Demographics**: 13 subgroups (race/ethnicity, gender, special
+  populations) available for 2019-2023 and 2025. No demographics for
+  2016-2018 or 2024.
+- **Grade Breakdown**: Individual grade counts (PK-12) available for
+  2016-2018 and 2024. Only TOTAL for 2019-2023 and 2025.
 - **40-Day vs 80-Day**: New Mexico reports enrollment at 40-day and
   80-day counts. This package uses 40-day data when available (the
-  standard snapshot used for funding).
+  standard snapshot used for funding). **Note: 2024 only has 80-Day
+  data** - the 40-Day subgroup file was never published by NM PED.
 
 ## Data source
 
