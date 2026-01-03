@@ -1,6 +1,7 @@
 # Create state-level aggregate from processed data
 
-Create state-level aggregate from processed data
+Aggregates data to state level. Uses district rows if available (to
+avoid double-counting), otherwise uses school rows.
 
 ## Usage
 

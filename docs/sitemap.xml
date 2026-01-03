@@ -3,6 +3,7 @@
 <url><loc>https://almartin82.github.io/nmschooldata/CLAUDE.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/LICENSE-text.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/LICENSE.html</loc></url>
+<url><loc>https://almartin82.github.io/nmschooldata/articles/data_availability.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/articles/enrollment_hooks.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/articles/index.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/authors.html</loc></url>
@@ -17,6 +18,7 @@
 <url><loc>https://almartin82.github.io/nmschooldata/reference/enr_grade_aggs.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/fetch_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/fetch_enr_multi.html</loc></url>
+<url><loc>https://almartin82.github.io/nmschooldata/reference/get_available_years.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/get_cache_dir.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/get_cache_path.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/get_nm_column_map.html</loc></url>
@@ -25,11 +27,13 @@
 <url><loc>https://almartin82.github.io/nmschooldata/reference/id_enr_aggs.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/index.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/nmschooldata-package.html</loc></url>
+<url><loc>https://almartin82.github.io/nmschooldata/reference/parse_2025_excel.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/parse_era1_excel.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/parse_era2_excel.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/pipe.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/process_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/process_era1_enr.html</loc></url>
+<url><loc>https://almartin82.github.io/nmschooldata/reference/process_era1_rows.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/process_era2_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/read_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/nmschooldata/reference/safe_numeric.html</loc></url>
