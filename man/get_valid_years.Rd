@@ -16,8 +16,9 @@ Returns a vector of school years for which enrollment data is available.
 Data availability by year:
 \itemize{
 \item 2016-2018: Enrollment by grade only (no demographic subgroups)
-\item 2019-2023, 2025: Full demographic subgroups available
-\item 2024: Only 80-Day data available (40-Day subgroup file not published)
+\item 2019-2023: Full 40D subgroup enrollment data
+\item 2024: 80D data only (grade counts by district, no subgroups)
+\item 2025: Full 40D subgroup enrollment data
 }
 }
 \keyword{internal}
