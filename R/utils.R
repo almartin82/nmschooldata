@@ -51,8 +51,7 @@ clean_names <- function(names) {
 #' Data availability by year:
 #' \itemize{
 #'   \item 2016-2018: Enrollment by grade only (no demographic subgroups)
-#'   \item 2019-2023, 2025: Full demographic subgroups available
-#'   \item 2024: Only 80-Day data available (40-Day subgroup file not published)
+#'   \item 2019-2024: Full demographic subgroups available
 #' }
 #'
 #' @return Vector of valid end years
@@ -61,9 +60,8 @@ get_valid_years <- function() {
 
   # Available years based on NM PED website research:
   # - 2016-2018: Enrollment by district/location/grade only (no subgroups)
-  # - 2019-2023, 2025: Full 40D subgroup enrollment data
-  # - 2024: Only 80D data available (40D subgroup file not published)
-  2016:2025
+  # - 2019-2024: Full 40D subgroup enrollment data
+  2016:2024
 }
 
 
@@ -75,7 +73,7 @@ get_valid_years <- function() {
 #' @return A list with three elements:
 #'   \describe{
 #'     \item{min_year}{The earliest available school year end (e.g., 2016 = 2015-16)}
-#'     \item{max_year}{The most recent available school year end (e.g., 2025 = 2024-25)}
+#'     \item{max_year}{The most recent available school year end (e.g., 2024 = 2023-24)}
 #'     \item{description}{A human-readable description of data availability}
 #'   }
 #' @export
@@ -86,8 +84,8 @@ get_valid_years <- function() {
 get_available_years <- function() {
   list(
     min_year = 2016,
-    max_year = 2025,
-    description = "New Mexico PED enrollment data is available from 2016 (2015-16 school year) through 2025 (2024-25 school year). Years 2016-2018 have enrollment by grade only (no demographic subgroups). Years 2019-2023 and 2025 have full demographic subgroups. Year 2024 only has 80-Day data available."
+    max_year = 2024,
+    description = "New Mexico PED enrollment data is available from 2016 (2015-16 school year) through 2024 (2023-24 school year). Years 2016-2018 have enrollment by grade only (no demographic subgroups). Years 2019-2024 have full demographic subgroups."
   )
 }
 
