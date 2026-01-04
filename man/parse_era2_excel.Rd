@@ -16,6 +16,12 @@ Data frame with enrollment data
 }
 \description{
 Newer NM PED enrollment files include demographic subgroup breakdowns
-by race/ethnicity and special populations.
+by race/ethnicity and special populations. Different year files have
+different structures:
+\itemize{
+\item 2019-2023: Have 10 header rows to skip, single sheet named "Masked"
+\item 2024: 80-Day file with NO header rows, district-level only, grade columns
+\item 2025: NO header rows, three sheets (by School, by District, State)
+}
 }
 \keyword{internal}
